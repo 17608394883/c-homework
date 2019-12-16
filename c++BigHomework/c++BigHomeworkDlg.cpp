@@ -106,7 +106,8 @@ BOOL CcBigHomeworkDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO:  在此添加额外的初始化代码
-
+	CButton* radio = (CButton*)GetDlgItem(IDC_RADIO1);
+	radio->SetCheck(1);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -172,6 +173,8 @@ void CcBigHomeworkDlg::OnBnClickedButton1()
 	sql.append(CT2A(m_username.GetString()));
 	sql.append("' and password='");
 	sql.append(CT2A(m_password.GetString()));
+	sql.append("' and role='");
+	sql.append(to_string(user));
 	sql.append("'");
 	vector<User> users;
 	BOOL is_true = QueryUser(conn, sql, users);
@@ -179,6 +182,7 @@ void CcBigHomeworkDlg::OnBnClickedButton1()
 	{
 		if (users.capacity() > 0)
 		{
+			//IDD_CBIGHOMEWORK_DIALOG
 			CShowWindow  *dlg = new CShowWindow;
 			//普通员工登录
 			if (user == 0)
