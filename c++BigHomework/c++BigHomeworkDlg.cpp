@@ -168,7 +168,7 @@ void CcBigHomeworkDlg::OnBnClickedButton1()
 	//检查用户名密码是否正确
 	sqlite3* conn = NULL;
 	getConn(&conn);
-	string sql ("select password from user where username= '");
+	string sql ("select password from user where phone= '");
 	sql.append(CT2A(m_username.GetString()));
 	sql.append("' and password='");
 	sql.append(CT2A(m_password.GetString()));
