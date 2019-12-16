@@ -180,6 +180,11 @@ void CcBigHomeworkDlg::OnBnClickedButton1()
 		if (users.capacity() > 0)
 		{
 			CShowWindow  *dlg = new CShowWindow;
+			//普通员工登录
+			if (user == 0)
+				dlg->userRole = 0;
+			else
+				dlg->userRole = 1;
 			dlg->Create(IDD_MAINWINDOW_DIALOG);
 			dlg->ShowWindow(SW_SHOW);
 		}
@@ -200,6 +205,7 @@ void CcBigHomeworkDlg::OnBnClickedButton1()
 void CcBigHomeworkDlg::OnBnClickedRadio1()
 {
 	// TODO:  在此添加控件通知处理程序代码
+	//普通员工
 	user = 0;
 }
 

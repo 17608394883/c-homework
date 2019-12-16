@@ -13,10 +13,15 @@
 
 IMPLEMENT_DYNAMIC(CShowWindow, CDialogEx)
 
+CString modiyPhone("");
+CString modiyName("");
+CString modiyDepName("");
+
 CShowWindow::CShowWindow(CWnd* pParent /*=NULL*/)
 	: CDialogEx(CShowWindow::IDD, pParent)
 	, m_username(_T(""))
 	, m_phone(_T(""))
+	, userRole(0)
 {
 
 }
@@ -41,6 +46,8 @@ BEGIN_MESSAGE_MAP(CShowWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_BTN_MODIFY, &CShowWindow::OnBnClickedBtnModify)
 	ON_BN_CLICKED(IDC_BUTTON1, &CShowWindow::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CShowWindow::OnBnClickedButton2)
+	ON_NOTIFY(NM_CLICK, LIST_PHONE, &CShowWindow::OnNMClickPhone)
+	ON_BN_CLICKED(IDC_BTN_REMOVE, &CShowWindow::OnBnClickedBtnRemove)
 END_MESSAGE_MAP()
 
 
@@ -60,7 +67,12 @@ void CShowWindow::OnBnClickedBtnAdd()
 void CShowWindow::OnBnClickedBtnModify()
 {
 	// TODO:  在此添加控件通知处理程序代码
+	
+
 	CModify *modifyDlg = new CModify;
+	modifyDlg->m_phone = modiyPhone;
+	modifyDlg->m_username = modiyName;
+	modifyDlg->m_depName = modiyDepName;
 
 	modifyDlg->Create(IDD_MODIFY_DIALOG);
 	modifyDlg->ShowWindow(SW_SHOW);
@@ -83,6 +95,13 @@ BOOL CShowWindow::OnInitDialog()
 	// TODO:  在此添加额外的初始化
 	startSet();
 
+	if (userRole==0)
+	{
+		GetDlgItem(IDC_STATIC_ADMIN)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_BTN_ADD)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_BTN_MODIFY)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_BTN_REMOVE)->ShowWindow(SW_HIDE);
+	}
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常:  OCX 属性页应返回 FALSE
@@ -262,4 +281,56 @@ void CShowWindow::OnBnClickedButton2()
 	m_list.DeleteAllItems();
 	CString str("");
 	show(str, str, str, 0);
+}
+
+
+void CShowWindow::OnNMClickPhone(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	//获取选中的的一个位置
+	POSITION p = m_list.GetFirstSelectedItemPosition();
+	if (p == NULL)
+	{
+		TRACE("没有行被选中!");
+	}
+	//获取刚选取的位置的下标(从0开始的)
+	int index = m_list.GetNextSelectedItem(p);
+	//获得选中的内容
+	//得到第index行.第0列的内容(下标从0开始)
+	CString FirstColumn = m_list.GetItemText(index, 0);
+	//得到第index行,第1列的内容
+	modiyName = m_list.GetItemText(index, 0);
+	modiyPhone = m_list.GetItemText(index, 1);//0 modiyName   1 modiyDepId     
+	modiyDepName = m_list.GetItemText(index, 2);
+	
+
+	*pResult = 0;
+}
+
+
+void CShowWindow::OnBnClickedBtnRemove()
+{
+	std::string name = CT2A(modiyName.GetString());
+
+	sqlite3* conn = NULL;
+	//创建或打开数据库
+	int result = sqlite3_open("D:\\phone.db", &conn); //如果路径不含中文，可以不用转码，保险起见，建议全部转码
+	if (result != SQLITE_OK) {
+		sqlite3_close(conn);
+
+		AfxMessageBox(TEXT("数据库打开失败！"));
+	}
+
+
+
+	std::string SQLString = "delete from user  where username = '" + name + "'";
+	
+
+	BOOL insertUserResult = sqlOperation(const_cast<char *>(SQLString.c_str()), &conn);
+	//失败
+	if (insertUserResult == FALSE)
+		AfxMessageBox(TEXT("删除失败！"));
+	else{
+		AfxMessageBox(TEXT("删除成功！"));
+	}
 }

@@ -37,4 +37,7 @@ public:
 	afx_msg void OnBnClickedButton1();
 	CListCtrl m_list;
 	afx_msg void OnBnClickedButton2();
+	afx_msg void OnNMClickPhone(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedBtnRemove();
+	int userRole;
 };

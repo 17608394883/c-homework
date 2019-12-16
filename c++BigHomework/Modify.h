@@ -1,4 +1,5 @@
 #pragma once
+#include "afxwin.h"
 
 
 // CModify 对话框
@@ -14,8 +15,20 @@ public:
 // 对话框数据
 	enum { IDD = IDD_MODIFY_DIALOG };
 
+
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
 	DECLARE_MESSAGE_MAP()
+
+public:
+	
+	CString m_username;
+	CString m_password;
+	CComboBox m_group;
+	CString m_depName;
+	CString m_phone;
+	virtual BOOL OnInitDialog();
+	
+	afx_msg void OnBnClickedButton1();
 };

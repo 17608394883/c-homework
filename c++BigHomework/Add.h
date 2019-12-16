@@ -1,4 +1,5 @@
 #pragma once
+#include "afxwin.h"
 
 
 // CAdd 对话框
@@ -18,4 +19,11 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
 
 	DECLARE_MESSAGE_MAP()
+public:
+	CString m_username;
+	CString m_phone;
+	CString m_pswd;
+	virtual BOOL OnInitDialog();
+	CComboBox m_group;
+	afx_msg void OnBnClickedButton1();
 };
