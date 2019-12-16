@@ -166,12 +166,28 @@ void CcBigHomeworkDlg::OnBnClickedButton1()
 	// TODO:  在此添加控件通知处理程序代码
 	UpdateData(TRUE);
 	//检查用户名密码是否正确
-	BOOL is_true = check(m_username, m_password, user);
+	sqlite3* conn = NULL;
+	getConn(&conn);
+	string sql ("select password from user where username= '");
+	sql.append(CT2A(m_username.GetString()));
+	sql.append("' and password='");
+	sql.append(CT2A(m_password.GetString()));
+	sql.append("'");
+	vector<User> users;
+	BOOL is_true = QueryUser(conn, sql, users);
 	if (is_true)
 	{
-		CShowWindow  *dlg = new CShowWindow;
-		dlg->Create(IDD_MAINWINDOW_DIALOG);
-		dlg->ShowWindow(SW_SHOW);
+		if (users.capacity() > 0)
+		{
+			CShowWindow  *dlg = new CShowWindow;
+			dlg->Create(IDD_MAINWINDOW_DIALOG);
+			dlg->ShowWindow(SW_SHOW);
+		}
+		else
+		{
+			MessageBox(L"用户名或者密码错误");
+		}
+		
 	}
 	else
 	{
@@ -184,12 +200,12 @@ void CcBigHomeworkDlg::OnBnClickedButton1()
 void CcBigHomeworkDlg::OnBnClickedRadio1()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	user = 1;
+	user = 0;
 }
 
 
 void CcBigHomeworkDlg::OnBnClickedRadio2()
 {
 	// TODO:  在此添加控件通知处理程序代码
-	user = 0;
+	user = 1;
 }
