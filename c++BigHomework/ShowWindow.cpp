@@ -39,8 +39,6 @@ void CShowWindow::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CShowWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_BTN_ADD, &CShowWindow::OnBnClickedBtnAdd)
 	ON_BN_CLICKED(IDC_BTN_MODIFY, &CShowWindow::OnBnClickedBtnModify)
-	ON_BN_CLICKED(IDC_BTN_SEARCH, &CShowWindow::OnBnClickedBtnSearch)
-	
 	ON_BN_CLICKED(IDC_BUTTON1, &CShowWindow::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CShowWindow::OnBnClickedButton2)
 END_MESSAGE_MAP()
@@ -75,31 +73,7 @@ void CShowWindow::OnBnClickedBtnModify()
 
 
 
-void CShowWindow::OnBnClickedBtnSearch()
-{
-	//清空
-	m_list.DeleteAllItems();
 
-	UpdateData(TRUE);     
-
-	CString depName;
-	CString username;
-	CString phoneNumber;
-
-	//获取下拉框内容
-	int index = m_group.GetCurSel();       
-	m_group.GetLBText(index, depName);
-	
-	//获取用户名  电话号码
-	username = m_username;
-	phoneNumber = m_phone;
-	
-
-	show(username, phoneNumber, depName,1);
-
-
-
-}
 
 
 BOOL CShowWindow::OnInitDialog()
@@ -250,13 +224,6 @@ std::string CShowWindow::getDepIdByName(std::string departmentName){
 
 
 
-void CShowWindow::OnBnClickedBtnSearchall()
-{
-	//清空
-	m_list.DeleteAllItems();
-	CString str("");
-	show(str, str, str,0);
-}
 
 
 //std::string SQLString = "CREATE TABLE   test (name CHAR(124),phone CHAR(124),time CHAR(124), status CHAR(4))";
