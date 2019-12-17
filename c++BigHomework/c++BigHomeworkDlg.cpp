@@ -191,6 +191,7 @@ void CcBigHomeworkDlg::OnBnClickedButton1()
 				dlg->userRole = 1;
 			dlg->Create(IDD_MAINWINDOW_DIALOG);
 			dlg->ShowWindow(SW_SHOW);
+			this->ShowWindow(SW_HIDE);
 		}
 		else
 		{
