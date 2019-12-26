@@ -3,10 +3,6 @@
 //
 
 #include "stdafx.h"
-#include "c++BigHomework.h"
-#include "c++BigHomeworkDlg.h"
-#include "afxdialogex.h"
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif

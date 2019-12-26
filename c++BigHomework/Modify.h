@@ -1,6 +1,8 @@
 #pragma once
 #include "afxwin.h"
+#include "Resource.h"
 
+using namespace std;
 
 // CModify ¶Ô»°¿ò
 

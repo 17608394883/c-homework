@@ -2,13 +2,23 @@
 //
 
 #include "stdafx.h"
-#include "c++BigHomework.h"
-#include "ShowWindow.h"
-#include "afxdialogex.h"
-#include "resource.h"
-#include "Add.h"
-#include "Modify.h"
+#include <shlobj.h>
+bool getAllUser(vector<User> &user)
+{
+	sqlite3* conn = NULL;
+	//创建或打开数据库
+	int result = sqlite3_open(G2U("D:\\phone.db"), &conn); //如果路径不含中文，可以不用转码，保险起见，建议全部转码
+	if (result != SQLITE_OK) {
+		sqlite3_close(conn);
+		return 0;
+	}
+	std::string SQLString;
+	//查找
+	SQLString = "SELECT username, phone, depId, role FROM user";
 
+	BOOL res = QueryUser(conn, SQLString, user);
+	return 1;
+}
 // CShowWindow 对话框
 
 IMPLEMENT_DYNAMIC(CShowWindow, CDialogEx)
@@ -48,6 +58,8 @@ BEGIN_MESSAGE_MAP(CShowWindow, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &CShowWindow::OnBnClickedButton2)
 	ON_NOTIFY(NM_CLICK, LIST_PHONE, &CShowWindow::OnNMClickPhone)
 	ON_BN_CLICKED(IDC_BTN_REMOVE, &CShowWindow::OnBnClickedBtnRemove)
+	ON_BN_CLICKED(IDC_BTN_REMOVE2, &CShowWindow::OnBnClickedBtnRemove2)
+	ON_BN_CLICKED(IDC_BTN_REMOVE3, &CShowWindow::OnBnClickedBtnRemove3)
 END_MESSAGE_MAP()
 
 
@@ -333,4 +345,140 @@ void CShowWindow::OnBnClickedBtnRemove()
 	else{
 		AfxMessageBox(TEXT("删除成功！"));
 	}
+}
+
+CString path()
+{
+	CString strFilePath;
+	TCHAR pszBuffer[_MAX_PATH];
+	BROWSEINFO bi;  LPITEMIDLIST pidl;
+	bi.hwndOwner = NULL;
+	bi.pidlRoot = NULL;
+	bi.pszDisplayName = pszBuffer;
+	bi.lpszTitle = _T("&Ntilde;&iexcl;&Ocirc;&ntilde;&sup2;&yen;&sup3;&ouml;±í&Acirc;·&frac34;&para;");
+	bi.ulFlags = BIF_RETURNFSANCESTORS | BIF_RETURNONLYFSDIRS;
+	bi.lpfn = NULL;
+	bi.lParam = 0;
+	if ((pidl = SHBrowseForFolder(&bi)) != NULL)
+	{
+		if (SHGetPathFromIDList(pidl, pszBuffer))
+		{
+			CString strTemp(pszBuffer);   strFilePath = strTemp;
+			if (strFilePath.GetLength() <= 1)
+			{
+			}
+			else if (strFilePath.Right(1) != _T("\\"))
+				strFilePath += _T("\\");
+		}
+	}
+	return strFilePath;
+}
+void CShowWindow::OnBnClickedBtnRemove2()
+{
+	// TODO:  在此添加控件通知处理程序代码
+	CString FileName = path();
+	FileName.Append(L"employer.xls");
+	CString sDriver = L"MICROSOFT EXCEL DRIVER (*.XLS)"; // Excel安装驱动	
+
+	CString FILEEXCEL;
+	FILEEXCEL.Format(L"DRIVER={%s};DSN='''';FIRSTROWHASNAMES=1;READONLY=FALSE;CREATE_DB=\"%s\";DBQ=%s", sDriver, FileName, FileName);
+
+
+	CDatabase date;
+	CString ssql;
+	if (date.OpenEx(FILEEXCEL, CDatabase::noOdbcDialog))
+	{
+		date.ExecuteSQL(L"CREATE TABLE 记录表(姓名 text, 电话 text, 部门 text, 用户类型 text);");
+
+		//插入数据    // 如需遍历数据库插入请使用类似方法
+		vector<User> user;
+		bool ret = getAllUser(user);
+		int j;
+		for (int i = 0; i < user.size(); i++) {
+			j = 0;
+			CString name(user[i].username.c_str());
+			CString phone(user[i].phone.c_str());
+			CString depName(searchDepNameById(user[i].depId).c_str());
+
+			CString role;
+			if (user[i].role == std::string("1"))
+			{
+				role = "管理员";
+			}
+			else
+			{
+				role = "普通员工";
+			}
+			ssql.Format(L"INSERT INTO 记录表(姓名, 电话,部门, 用户类型) VALUES('%s','%s','%s','%s');", name, phone, depName, role);
+			date.ExecuteSQL(ssql);
+		}
+	}
+	else
+	{
+		AfxMessageBox(L"没有Excel驱动");
+	}
+
+	AfxMessageBox(L"导出完成！");
+}
+
+
+void CShowWindow::OnBnClickedBtnRemove3()
+{
+	CString FileName;//保存路径
+	CFileDialog opendlg(TRUE, _T("*"), _T("*.xls"), OFN_OVERWRITEPROMPT, _T("所有文件(*.*;)|*.*||"), NULL);
+	if (opendlg.DoModal() == IDOK)
+	{
+		FileName = opendlg.GetPathName();
+	}
+		// TODO:  在此添加控件通知处理程序代码
+		CString sDriver = L"MICROSOFT EXCEL DRIVER (*.XLS)"; // Excel安装驱动	
+		CString FILEEXCEL;
+		FILEEXCEL.Format(L"DRIVER={%s};DSN='''';FIRSTROWHASNAMES=1;READONLY=FALSE;CREATE_DB=\"%s\";DBQ=%s", sDriver, FileName, FileName);
+		CDatabase date;
+		if (date.OpenEx(FILEEXCEL, CDatabase::noOdbcDialog))
+		{
+			vector<User> users;
+			CRecordset *recordset = new CRecordset(&date);
+			recordset->Open(CRecordset::snapshot, L"select 姓名, 电话, 部门 from 记录表", 0); 
+			while (!recordset->IsEOF()) //如果记录不为空或者没有滚到最后一个记录
+			{
+				CString username;
+				CString phone;
+				CString department;
+				CString role;
+				recordset->GetFieldValue(L"姓名", username);
+				recordset->GetFieldValue(L"电话", phone);
+				recordset->GetFieldValue(L"部门", department);
+				USES_CONVERSION;
+				string depId = getDepIdByName(W2CA(department));
+				User user(W2CA(username), W2CA(phone), atoi(depId.c_str()));
+				users.push_back(user);
+				//插入
+				sqlite3* conn = NULL;
+				//创建或打开数据库
+				int result = sqlite3_open("D:\\phone.db", &conn); //如果路径不含中文，可以不用转码，保险起见，建议全部转码
+				if (result != SQLITE_OK) {
+					sqlite3_close(conn);
+
+					AfxMessageBox(TEXT("数据库打开失败！"));
+				}
+				string name = W2CA(username);
+				string ph = W2CA(phone);
+				string pswd = "123456";
+				std::string SQLString = "INSERT INTO user(username, phone, depId, role, password) values('" + name + "', '" + ph + "', '" + depId + "', '0', '" + pswd + "')";
+				BOOL insertUserResult = sqlOperation(const_cast<char *>(SQLString.c_str()), &conn);
+				//插入失败
+				if (insertUserResult == FALSE)
+					AfxMessageBox(TEXT("导入失败！请检查电话号码和姓名是否重复"));
+
+				recordset->MoveNext(); //移动到下一个
+			}
+
+		}
+		else
+		{
+			AfxMessageBox(L"没有Excel驱动");
+		}
+	
+		AfxMessageBox(L"导入完成！");
 }

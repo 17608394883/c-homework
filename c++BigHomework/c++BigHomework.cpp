@@ -3,8 +3,6 @@
 //
 
 #include "stdafx.h"
-#include "c++BigHomework.h"
-#include "c++BigHomeworkDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

@@ -2,10 +2,6 @@
 //
 
 #include "stdafx.h"
-#include "c++BigHomework.h"
-#include "Add.h"
-#include "afxdialogex.h"
-
 
 // CAdd ¶Ô»°¿ò
 

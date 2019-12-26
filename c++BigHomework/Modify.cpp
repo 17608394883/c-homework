@@ -2,11 +2,6 @@
 //
 
 #include "stdafx.h"
-#include "c++BigHomework.h"
-#include "Modify.h"
-#include "afxdialogex.h"
-
-
 // CModify 对话框
 
 IMPLEMENT_DYNAMIC(CModify, CDialogEx)
@@ -87,7 +82,7 @@ BOOL CModify::OnInitDialog()
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// 异常:  OCX 属性页应返回 FALSE
 }
-std::string getDepIdByName1(std::string departmentName){
+std::string getDepIdByName11(std::string departmentName){
 
 	sqlite3* conn = NULL;
 	std::string SQLString = "SELECT * FROM department";
@@ -135,7 +130,7 @@ void CModify::OnBnClickedButton1()
 	std::string pswd = CT2A(password.GetString());
 
 	std::string department = CT2A(depName.GetString());
-	std::string depId = getDepIdByName1(department);
+	std::string depId = getDepIdByName11(department);
 
 	sqlite3* conn = NULL;
 	//创建或打开数据库

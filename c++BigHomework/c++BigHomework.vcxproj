@@ -108,6 +108,7 @@
     <ClInclude Include="Add.h" />
     <ClInclude Include="c++BigHomework.h" />
     <ClInclude Include="c++BigHomeworkDlg.h" />
+    <ClInclude Include="entity.h" />
     <ClInclude Include="login_common.h" />
     <ClInclude Include="Modify.h" />
     <ClInclude Include="Resource.h" />
@@ -121,6 +122,7 @@
     <ClCompile Include="Add.cpp" />
     <ClCompile Include="c++BigHomework.cpp" />
     <ClCompile Include="c++BigHomeworkDlg.cpp" />
+    <ClCompile Include="entity.cpp" />
     <ClCompile Include="login_common.cpp" />
     <ClCompile Include="Modify.cpp" />
     <ClCompile Include="ShowWindow.cpp" />

@@ -51,6 +51,9 @@
     <ClInclude Include="sqlTool.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="entity.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="c++BigHomework.cpp">
@@ -75,6 +78,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="sqlTool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="entity.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

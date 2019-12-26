@@ -32,12 +32,23 @@
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 #include <afxcontrolbars.h>     // �������Ϳؼ����� MFC ֧��
-#include "ShowWindow.h"
-#include "login_common.h"
 //#include "sqlite3.h"
 #include "sqlite3.h"
-#include "sqlTool.h"
 #include <string>
+
+
+#include "entity.h"
+#include "Modify.h"
+#include "c++BigHomework.h"
+#include "afxdialogex.h"
+#include "login_common.h"
+#include "ShowWindow.h"
+#include "resource.h"
+#include "Add.h"
+#include "afxdb.h"
+#include "fstream"
+#include "sqlTool.h"
+#include "c++BigHomeworkDlg.h"
 
 using namespace std;
 

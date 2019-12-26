@@ -1,8 +1,10 @@
-#include <string>
+#include "stdafx.h"
+#pragma once
 class User
 {
 public:
-	
+	User();
+	User(std::string  username, std::string  phone, int depId);
 	int uId;
 	std::string username;
 	std::string phone;

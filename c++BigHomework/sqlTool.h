@@ -2,7 +2,7 @@
 #include "entity.h"
 #include <vector>
 
-
+#pragma once
 char* G2U(const char* gb2312);
 
 BOOL  sqlOperation(char *SQL, sqlite3 **conn);

@@ -1,6 +1,9 @@
 #pragma once
-#include "afxwin.h"
 
+#include "afxwin.h"
+#include "afxdialogex.h"
+#include "resource.h"
+#include "c++BigHomework.h"
 
 // CAdd ¶Ô»°¿ò
 

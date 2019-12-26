@@ -1,6 +1,6 @@
 #pragma once
 #include "stdafx.h"
-#include "resource.h"
+#include "Resource.h"
 #include "afxwin.h"
 #include "afxcmn.h"
 #include <string>
@@ -40,4 +40,6 @@ public:
 	afx_msg void OnNMClickPhone(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedBtnRemove();
 	int userRole;
+	afx_msg void OnBnClickedBtnRemove2();
+	afx_msg void OnBnClickedBtnRemove3();
 };

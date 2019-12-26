@@ -3,7 +3,7 @@
 //
 
 #pragma once
-
+#include "Resource.h"
 
 // CcBigHomeworkDlg ¶Ô»°¿ò
 class CcBigHomeworkDlg : public CDialogEx

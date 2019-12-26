@@ -1,6 +1,4 @@
-#include "sqlTool.h"
 #include "stdafx.h"
-
 
 
 char* G2U(const char* gb2312)
