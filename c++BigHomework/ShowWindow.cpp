@@ -465,7 +465,7 @@ void CShowWindow::OnBnClickedBtnRemove3()
 				string name = W2CA(username);
 				string ph = W2CA(phone);
 				string pswd = "123456";
-				std::string SQLString = "INSERT INTO user(username, phone, depId, role, password) values('" + name + "', '" + ph + "', '" + depId + "', '0', '" + pswd + "')";
+				std::string SQLString = "INSERT INTO user(username, phone, depId, role, password) values('" + name + "', '" + ph.substr(0,ph.length()-2) + "', '" + depId + "', '0', '" + pswd + "')";
 				BOOL insertUserResult = sqlOperation(const_cast<char *>(SQLString.c_str()), &conn);
 				//≤Â»Î ß∞‹
 				if (insertUserResult == FALSE)
